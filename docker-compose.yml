@@ -1,0 +1,31 @@
+services:
+  backend:
+    image: ${IMAGE_PREFIX:-coffee-landing}-backend:${TAG:-latest}
+    build: ./backend
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      DB_PATH: /data/leads.sqlite
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+    volumes:
+      - leads-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    image: ${IMAGE_PREFIX:-coffee-landing}-web:${TAG:-latest}
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+
+volumes:
+  leads-data:
