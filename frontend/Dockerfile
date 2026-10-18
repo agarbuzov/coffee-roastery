@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG VITE_SITE_URL=https://your-domain.example
+ENV VITE_SITE_URL=$VITE_SITE_URL
 RUN npm run build
 
 # --- nginx: статика + прокси на backend ---
