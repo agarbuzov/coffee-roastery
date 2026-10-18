@@ -1,7 +1,7 @@
 import asyncio
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, BackgroundTasks
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,6 +10,7 @@ from starlette.responses import JSONResponse
 from .database import get_session
 from .models import Lead
 from .schemas import LeadCreate, LeadResponse, ErrorResponse
+from .telegram import send_lead
 
 api_router = APIRouter(prefix="/api")
 
@@ -21,6 +22,7 @@ _lead_lock = asyncio.Lock()
 async def create_lead(
         lead: LeadCreate,
         response: Response,
+        background: BackgroundTasks,
         session: AsyncSession = Depends(get_session),
 ):
     async with _lead_lock:
@@ -48,6 +50,7 @@ async def create_lead(
         except SQLAlchemyError:
             await session.rollback()
             return JSONResponse(status_code=503, content=ErrorResponse().model_dump())
+        background.add_task(send_lead, row.id, lead)  # только для новой заявки
         return LeadResponse(id=row.id)
 
 
