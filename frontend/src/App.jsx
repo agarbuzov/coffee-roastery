@@ -2,13 +2,27 @@ import { useState } from 'react'
 import LeadForm from './components/LeadForm.jsx'
 import { SUPPORT_PHONE, SUPPORT_TEL } from './config.js'
 
-const BEANS = ['var(--r1)', 'var(--r2)', 'var(--r3)', 'var(--r4)', 'var(--r5)', 'var(--r6)', 'var(--r7)']
+const ADDRESS = 'Минск, ул. Короля, 9'
+const HOURS = [['пн–пт', '8:00–20:00'], ['сб–вс', '10:00–18:00']]
 
 const PRODUCTS = [
   { name: 'Эфиопия Иргачеффе', notes: 'Цветочный, бергамот, светлая обжарка', meta: '250 г', price: '32 BYN', roast: 'var(--r2)', order: 'Эфиопия Иргачеффе, 250 г' },
   { name: 'Колумбия Уила', notes: 'Карамель, красное яблоко', meta: '250 г', price: '29 BYN', roast: 'var(--r4)', order: 'Колумбия Уила, 250 г' },
   { name: 'Бразилия Серрадо', notes: 'Орех, шоколад, под эспрессо', meta: '250 г', price: '26 BYN', roast: 'var(--r6)', order: 'Бразилия Серрадо, 250 г' },
-  { name: 'Дрип-пакеты, ассорти', notes: 'Заварить можно в чашке, без кофеварки', meta: '10 штук', price: '18 BYN', roast: 'var(--r3)', order: 'Дрип-пакеты, ассорти, 10 штук' },
+  { name: 'Дрип-пакеты, ассорти', notes: '', meta: '10 штук', price: '18 BYN', roast: 'var(--r3)', order: 'Дрип-пакеты, ассорти, 10 штук' },
+]
+
+const WEEK = [
+  ['Пн'], ['Вт'], ['Ср'],
+  ['Чт', 'жарим', 'roast'],
+  ['Пт', 'везём', 'ship'],
+  ['Сб'], ['Вс'],
+]
+
+const FACTS = [
+  ['2019', 'с этого года обжариваем сами'],
+  ['5 кг', 'размер одной партии'],
+  ['1–3 дня', 'от обжарки до вашей кухни'],
 ]
 
 export default function App() {
@@ -24,7 +38,12 @@ export default function App() {
     <>
       <header>
         <div className="wrap">
-          <a className="logo" href="#top">Зерно</a>
+          <a className="logo" href="#top">Кварта</a>
+          <nav aria-label="Разделы">
+            <a href="#products">Кофе</a>
+            <a href="#delivery">Доставка</a>
+            <a href="#order">Контакты</a>
+          </nav>
           <a className="btn sm" href="#order">Оставить заявку</a>
         </div>
       </header>
@@ -32,29 +51,53 @@ export default function App() {
       <main id="top">
         <section className="hero">
           <div className="wrap">
-            <h1>Кофе, обжаренный маленькими партиями</h1>
-            <p>Три сорта зерна, дрип-пакеты и подписка: две пачки в месяц и бесплатная доставка.</p>
-            <a className="btn" href="#order">Заказать кофе</a>
-            <div className="roast" aria-hidden="true">
-              {BEANS.map((c) => <span key={c} className="bean" style={{ '--c': c }} />)}
+            <h1>Жарим в четверг, привозим в пятницу</h1>
+            <p className="sub-text">Небольшая обжарка в Минске. Кофе приезжает к вам на 1–3 день после обжарки, пока он пахнет так, как задумано.</p>
+            <div className="actions">
+              <a className="btn" href="#order">Заказать кофе</a>
+              <a className="btn ghost" href="#products">Что жарим</a>
             </div>
-            <div className="roast-label" aria-hidden="true"><span>Светлая обжарка</span><span>Тёмная обжарка</span></div>
+            <div className="week" aria-hidden="true">
+              {WEEK.map(([day, label, kind]) => (
+                <div key={day} className={'day' + (kind ? ' ' + kind : '')}>
+                  <b>{day}</b>{label}
+                </div>
+              ))}
+            </div>
+            <p className="week-note">Четверг — обжарка. Пятница — развозим заказы по Минску.</p>
+          </div>
+        </section>
+
+        <section className="about" id="about">
+          <div className="wrap">
+            <div>
+              <h2>Кто мы и почему важна свежесть</h2>
+              <p>Мы — Аня и Дмитрий. Раньше работали бариста, а с 2019 года обжариваем кофе сами: небольшими партиями по 5 кг.</p>
+              <p>Свежий кофе пахнет ярче и вкуснее заваривается, со временем аромат уходит. Поэтому мы жарим по четвергам, а в пятницу уже везём заказы.</p>
+            </div>
+            <div className="facts">
+              {FACTS.map(([big, text]) => (
+                <div className="fact" key={big}><b>{big}</b><span>{text}</span></div>
+              ))}
+            </div>
           </div>
         </section>
 
         <section className="products" id="products">
           <div className="wrap">
-            <h2>Что обжариваем</h2>
+            <h2>Что жарим</h2>
 
             {PRODUCTS.map((p) => (
               <div key={p.name} className="item">
                 <span className="bean" style={{ '--c': p.roast }} aria-hidden="true" />
                 <div>
                   <h3>{p.name}</h3>
-                  <p className="notes">{p.notes}</p>
+                  {p.notes && <p className="notes">{p.notes}</p>}
                 </div>
-                <span className="meta">{p.meta}</span>
-                <span className="price">{p.price}</span>
+                <div className="spec">
+                  <span className="meta">{p.meta}</span>
+                  <span className="price">{p.price}</span>
+                </div>
                 <button className="btn ghost sm buy" type="button" onClick={() => choose('one_time', p.order)}>Заказать</button>
               </div>
             ))}
@@ -72,12 +115,36 @@ export default function App() {
           </div>
         </section>
 
+        <section className="delivery" id="delivery">
+          <div className="wrap">
+            <h2>Доставка и самовывоз</h2>
+            <div className="cards">
+              <div className="card">
+                <h3>Доставка по Минску</h3>
+                <p>Развозим по пятницам. При заказе от 50 BYN доставка бесплатная.</p>
+                <p>Подписка всегда приезжает бесплатно.</p>
+              </div>
+              <div className="card">
+                <h3>Самовывоз</h3>
+                <p>{ADDRESS}</p>
+                <dl>
+                  {HOURS.map(([d, t]) => (<span key={d} style={{ display: 'contents' }}><dt>{d}</dt><dd>{t}</dd></span>))}
+                </dl>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="order" id="order">
           <div className="wrap">
             <div>
               <h2>Оставьте заявку</h2>
-              <p className="lead">Укажите телефон — менеджер перезвонит, уточнит детали и оформит заказ.</p>
-              <p className="call">Удобнее позвонить? <a href={SUPPORT_TEL}>{SUPPORT_PHONE}</a></p>
+              <p className="lead">Оставьте телефон: менеджер перезвонит и оформит заказ или подписку.</p>
+              <div className="contacts">
+                <div><span>Телефон</span><a href={SUPPORT_TEL}>{SUPPORT_PHONE}</a></div>
+                <div><span>Адрес мастерской</span>{ADDRESS}</div>
+                <div><span>Часы работы</span>{HOURS.map(([d, t]) => `${d} ${t}`).join(', ')}</div>
+              </div>
             </div>
             <div>
               <LeadForm prefill={prefill} />
@@ -86,7 +153,7 @@ export default function App() {
         </section>
       </main>
 
-      <footer><div className="wrap">Зерно — обжарка кофе. Цены указаны в белорусских рублях.</div></footer>
+      <footer><div className="wrap">© Кварта · {ADDRESS}</div></footer>
     </>
   )
 }

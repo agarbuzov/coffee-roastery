@@ -2,7 +2,7 @@
   --paper:#E6EADB; --panel:#F6F7F0; --ink:#2A1A13; --muted:#5B4A3F;
   --cherry:#B02A3F; --cherry-dark:#8E2133; --leaf:#2F4A3A; --line:#C9D0BA;
   --r1:#D9A864; --r2:#C98F4E; --r3:#A8703A; --r4:#8A5430; --r5:#6B3F25; --r6:#4A2A1B; --r7:#2E1A12;
-  --f-head:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-head:"Literata",Georgia,"Times New Roman",serif;
   --f-body:"Onest",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
 }
 *{box-sizing:border-box}
@@ -12,7 +12,7 @@ a{color:inherit}
 :focus-visible{outline:3px solid var(--cherry);outline-offset:3px}
 .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 h1,h2{font-family:var(--f-head);font-weight:700;line-height:1.1;margin:0;letter-spacing:-.01em}
-h1{font-size:clamp(32px,6vw,60px);max-width:14ch}
+h1{font-size:clamp(34px,6.4vw,64px);max-width:16ch}
 h2{font-size:clamp(24px,3.6vw,36px)}
 
 header{padding:18px 0}
@@ -27,11 +27,9 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 
 /* hero */
 .hero{padding:40px 0 64px}
-.hero p{max-width:46ch;font-size:19px;color:var(--muted);margin:22px 0 30px}
-.roast{display:flex;gap:clamp(4px,1.4vw,12px);margin-top:56px}
+.hero p.sub-text{max-width:46ch;font-size:19px;color:var(--muted);margin:22px 0 30px}
 .bean{flex:1;aspect-ratio:1/1.35;max-width:120px;border-radius:50% 50% 50% 50%/58% 58% 42% 42%;position:relative;background:var(--c)}
 .bean::after{content:"";position:absolute;left:50%;top:10%;bottom:10%;width:12%;border-radius:50%;background:rgba(0,0,0,.28);transform:translateX(-50%) rotate(8deg)}
-.roast-label{display:flex;justify-content:space-between;margin-top:10px;font-size:14px;color:var(--muted)}
 
 /* products */
 .products{padding:56px 0;background:var(--panel)}
@@ -41,9 +39,10 @@ header .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 .item .bean{width:44px;flex:none;max-width:none;aspect-ratio:1/1.35}
 .item h3{margin:0;font:600 19px/1.3 var(--f-body)}
 .item .notes{margin:2px 0 0;color:var(--muted);font-size:15px}
-.item .meta{color:var(--muted);font-size:15px;white-space:nowrap}
-.item .price{font:700 18px/1 var(--f-head);white-space:nowrap}
-.item .buy{grid-column:auto}
+.item .spec{display:flex;align-items:baseline;gap:18px}
+.item .meta{color:var(--muted);font-size:15px;white-space:nowrap;min-width:64px}
+.item .price{font:700 18px/1.2 var(--f-head);white-space:nowrap;min-width:80px;text-align:right}
+.item .buy{white-space:nowrap}
 .sub{margin-top:28px;background:var(--leaf);color:var(--paper);border-radius:16px;padding:28px;display:grid;grid-template-columns:1fr auto;gap:16px 28px;align-items:center}
 .sub h3{font:700 clamp(22px,3vw,28px)/1.15 var(--f-head);margin:0 0 8px}
 .sub p{margin:0;color:#D5DDC7;max-width:48ch}
@@ -90,3 +89,47 @@ footer{padding:28px 0;border-top:1px solid var(--line);font-size:14px;color:var(
   form,.done{padding:20px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+
+/* ---- навигация ---- */
+nav{display:flex;gap:26px;margin-left:auto;margin-right:24px}
+nav a{text-decoration:none;font-weight:500;font-size:15px}
+nav a:hover{color:var(--cherry)}
+@media (max-width:760px){nav{display:none}}
+
+/* ---- hero: неделя ---- */
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:52px;max-width:620px}
+.day{border:2px solid var(--line);border-radius:12px;background:var(--panel);padding:10px 2px 12px;text-align:center;color:var(--muted);font-size:11px;min-height:70px}
+.day b{display:block;font:600 15px var(--f-body);color:var(--ink);margin-bottom:6px}
+.day.roast{background:var(--r6);border-color:var(--r6);color:#EADBC8}
+.day.ship{background:var(--cherry);border-color:var(--cherry);color:#fff}
+.day.roast b,.day.ship b{color:#fff}
+.week-note{margin:14px 0 0;font-size:15px;color:var(--muted);max-width:52ch}
+
+/* ---- о нас ---- */
+.about{padding:64px 0}
+.about .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
+.about p{margin:16px 0 0;max-width:52ch}
+.facts{display:grid;gap:0}
+.fact{padding:18px 0;border-top:2px solid var(--ink)}
+.fact:last-child{border-bottom:2px solid var(--ink)}
+.fact b{display:block;font:700 clamp(32px,5vw,46px)/1 var(--f-head)}
+.fact span{color:var(--muted);font-size:15px}
+
+/* ---- доставка ---- */
+.delivery{padding:56px 0;background:var(--panel)}
+.delivery h2{margin-bottom:28px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--paper)}
+.card h3{font:700 22px/1.2 var(--f-head);margin:0 0 10px}
+.card p{margin:0 0 10px}
+.card dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:15px}
+.card dt{color:var(--muted)}
+.card dd{margin:0;font-weight:500}
+
+.contacts{margin-top:24px;font-size:16px;display:grid;gap:6px}
+.contacts span{color:var(--muted);font-size:14px;display:block}
+@media (max-width:760px){
+  .about .wrap,.cards{grid-template-columns:1fr}
+  .about .wrap{gap:28px}
+}
