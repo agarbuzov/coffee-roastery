@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from backend.src import Attribution, ErrorResponse, Interest, LeadCreate, LeadResponse
+from backend.src.schemas import Attribution, ErrorResponse, Interest, LeadCreate, LeadResponse
 
 
 def make(**overrides):
