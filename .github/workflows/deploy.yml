@@ -80,6 +80,8 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACTOR: ${{ github.actor }}
@@ -102,7 +104,13 @@ jobs:
             "docker login ghcr.io -u '$ACTOR' --password-stdin"
 
           # обновление и проверка здоровья
-          ssh $KEY "$REMOTE" "cd '$DEPLOY_PATH' && IMAGE_PREFIX='$PREFIX' TAG='$GITHUB_SHA' bash -s" <<'EOF'
+          ssh $KEY "$REMOTE" \
+            "cd '$DEPLOY_PATH' &&
+             IMAGE_PREFIX='$PREFIX' \
+             TAG='$GITHUB_SHA' \
+             TELEGRAM_BOT_TOKEN='$TELEGRAM_BOT_TOKEN' \
+             TELEGRAM_CHAT_ID='$TELEGRAM_CHAT_ID' \
+             bash -s" <<'EOF'
           set -euo pipefail
           docker compose pull
           docker compose up -d --remove-orphans
