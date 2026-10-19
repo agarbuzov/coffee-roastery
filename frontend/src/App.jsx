@@ -3,6 +3,15 @@ import LeadForm from './components/LeadForm.jsx'
 import { SUPPORT_PHONE, SUPPORT_TEL } from './config.js'
 
 const ADDRESS = 'Минск, ул. Короля, 9'
+const MAP_URL = 'https://yandex.by/maps/-/CXFKv2i5'
+
+function AddressLink() {
+  return (
+    <a href={MAP_URL} target="_blank" rel="noopener noreferrer" title="Открыть на карте">
+      {ADDRESS}
+    </a>
+  )
+}
 const HOURS = [['пн–пт', '8:00–20:00'], ['сб–вс', '10:00–18:00']]
 
 const PRODUCTS = [
@@ -126,7 +135,7 @@ export default function App() {
               </div>
               <div className="card">
                 <h3>Самовывоз</h3>
-                <p>{ADDRESS}</p>
+                <p><AddressLink /></p>
                 <dl>
                   {HOURS.map(([d, t]) => (<span key={d} style={{ display: 'contents' }}><dt>{d}</dt><dd>{t}</dd></span>))}
                 </dl>
@@ -142,7 +151,7 @@ export default function App() {
               <p className="lead">Оставьте телефон: менеджер перезвонит и оформит заказ или подписку.</p>
               <div className="contacts">
                 <div><span>Телефон</span><a href={SUPPORT_TEL}>{SUPPORT_PHONE}</a></div>
-                <div><span>Адрес мастерской</span>{ADDRESS}</div>
+                <div><span>Адрес мастерской</span><AddressLink /></div>
                 <div><span>Часы работы</span>{HOURS.map(([d, t]) => `${d} ${t}`).join(', ')}</div>
               </div>
             </div>
@@ -153,7 +162,7 @@ export default function App() {
         </section>
       </main>
 
-      <footer><div className="wrap">© Кварта · {ADDRESS}</div></footer>
+      <footer><div className="wrap">© Кварта · <AddressLink /></div></footer>
     </>
   )
 }
