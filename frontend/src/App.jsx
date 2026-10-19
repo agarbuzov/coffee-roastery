@@ -59,7 +59,10 @@ export default function App() {
 
       <main id="top">
         <section className="hero">
+          <img className="hero-img" src="/photos/hero.jpg" alt="" width="1600" height="1220" fetchPriority="high" decoding="async" />
+          <div className="hero-shade" />
           <div className="wrap">
+            <p className="eyebrow">Кварта · обжарка кофе в Минске</p>
             <h1>Жарим в четверг, привозим в пятницу</h1>
             <p className="sub-text">Небольшая обжарка в Минске. Кофе приезжает к вам на 1–3 день после обжарки, пока он пахнет так, как задумано.</p>
             <div className="actions">
